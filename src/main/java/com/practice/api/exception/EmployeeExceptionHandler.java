@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class StudentRestExceptionHandler {
+public class EmployeeExceptionHandler {
 
     // Adding an exception handler
     @ExceptionHandler
-    public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exception){
+    public ResponseEntity<EmployeeErrorResponse> handleException(EmployeeNotFoundException exception){
 
-        StudentErrorResponse error = new StudentErrorResponse();
+        EmployeeErrorResponse error = new EmployeeErrorResponse();
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setMessage(exception.getMessage());
         error.setTimeStamp(System.currentTimeMillis());
@@ -21,9 +21,9 @@ public class StudentRestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<StudentErrorResponse> handleException(Exception exception){
+    public ResponseEntity<EmployeeErrorResponse> handleException(Exception exception){
 
-        StudentErrorResponse error = new StudentErrorResponse();
+        EmployeeErrorResponse error = new EmployeeErrorResponse();
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(exception.getMessage());
         error.setTimeStamp(System.currentTimeMillis());

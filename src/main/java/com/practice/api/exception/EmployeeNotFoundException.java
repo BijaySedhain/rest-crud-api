@@ -1,15 +1,15 @@
 package com.practice.api.exception;
 
-public class StudentNotFoundException extends RuntimeException{
-    public StudentNotFoundException(String message) {
+public class EmployeeNotFoundException extends RuntimeException{
+    public EmployeeNotFoundException(String message) {
         super(message);
     }
 
-    public StudentNotFoundException(String message, Throwable cause) {
+    public EmployeeNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public StudentNotFoundException(Throwable cause) {
+    public EmployeeNotFoundException(Throwable cause) {
         super(cause);
     }
 }
