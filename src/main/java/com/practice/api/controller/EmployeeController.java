@@ -1,6 +1,7 @@
 package com.practice.api.controller;
 
 import com.practice.api.entity.Employee;
+import com.practice.api.exception.EmployeeErrorResponse;
 import com.practice.api.exception.EmployeeNotFoundException;
 import com.practice.api.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id){
+    public ResponseEntity<?> getEmployeeById(@PathVariable int id){
         log.info("Fetching employee with ID: {}", id);
         try {
             Employee employee = employeeService.findById(id);
@@ -36,7 +38,11 @@ public class EmployeeController {
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
             log.warn("Employee not found with ID: {}", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+            EmployeeErrorResponse errorResponse = new EmployeeErrorResponse();
+            errorResponse.setMessage("Employee not found with ID: " + id);
+            errorResponse.setTimeStamp(LocalDateTime.now());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
@@ -67,12 +73,12 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable int id){
+    public ResponseEntity<String> deleteById(@PathVariable int id){
         log.info("Deleting employee with ID: {}", id);
         try {
             employeeService.deleteById(id);
             log.debug("Employee with ID {} deleted", id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Employee with ID " +id+ " has been deleted.",HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
             log.warn("Employee not found with ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
